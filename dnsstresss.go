@@ -185,7 +185,8 @@ func linearResolver(threadID int, domain string, sentCounterCh chan<- statsMessa
 
 func dnsExchange(resolver string, message *dns.Msg) error {
 	//XXX: How can we share the connection between subsequent attempts ?
-	dnsconn, err := net.Dial("udp", resolver)
+	d := net.Dialer{Timeout: time.Second * 5}
+	dnsconn, err := d.Dial("udp", resolver)
 	if err != nil {
 		return err
 	}
